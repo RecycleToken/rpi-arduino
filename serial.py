@@ -3,13 +3,15 @@ import serial
 import time
 import req
 
+POST_VAL = 10
+
 def process():
     command = req.get_command() #Gets command from the Image Processing API
     print("Command: {}".format(command)) #DEBUG: Print command
     ser.write("{}\n".format(command).encode('utf-8')) #Write the command to arduino through USB Serial
     commands = ["1","2","3","4"] #Hardcoded commands
     if command in commands:
-        #TODO: Get web3 to work or change this to a request to web3 api
+        req.post_recycled(POST_VAL);#TODO: Get web3 to work or change this to a request to web3 api
     time.sleep(3) #Allowing time for motors
 
 if __name__ == '__main__':

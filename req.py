@@ -8,13 +8,13 @@ from time import sleep
 image_path = './cam.jpg'
 
 # POST isteği için endpoint URL'si
-url = 'http://greenscan.pythonanywhere.com/capture'
+command_url = 'http://greenscan.pythonanywhere.com/capture'
 camera = PiCamera()
 camera.resolution = (1024, 768)
 camera.start_preview()
 sleep(2)
 #TODO: implement camera and send picture in post request to webservice
-def getCommand():
+def get_command():
     camera.capture('cam.jpg')
     sleep(0.4)
     with open(image_path, 'rb') as file:
@@ -34,3 +34,8 @@ def getCommand():
             print("Hata Oluştu: ",str(e))
     else:
         print("İstek başarısız. HTTP Hata Kodu:", response.status_code)
+
+recycle_url = ''
+def post_recycled(data):
+    response = requests.post(recycle_url, data=data)
+    print("Recycle response: ".format(response))

@@ -2,15 +2,14 @@
 import serial
 import time
 import req
-import web3client
 
 def process():
-    command = req.getCommand() #Gets command from the Image Processing API
+    command = req.get_command() #Gets command from the Image Processing API
     print("Command: {}".format(command)) #DEBUG: Print command
     ser.write("{}\n".format(command).encode('utf-8')) #Write the command to arduino through USB Serial
     commands = ["1","2","3","4"] #Hardcoded commands
     if command in commands:
-        web3client.add_carbon(10) #TODO: Get web3 to work or change this to a request to web3 api
+        #TODO: Get web3 to work or change this to a request to web3 api
     time.sleep(3) #Allowing time for motors
 
 if __name__ == '__main__':

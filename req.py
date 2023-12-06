@@ -13,7 +13,7 @@ camera = PiCamera()
 camera.resolution = (1024, 768)
 camera.start_preview()
 sleep(2)
-#TODO: implement camera and send picture in post request to webservice
+
 def get_command():
     camera.capture('cam.jpg')
     sleep(0.4)
@@ -35,7 +35,9 @@ def get_command():
     else:
         print("İstek başarısız. HTTP Hata Kodu:", response.status_code)
 
+#TODO: Add endpoint for carbon reward logic
 recycle_url = ''
+
 def post_recycled(data):
     response = requests.post(recycle_url, data=data)
     print("Recycle response: ".format(response))

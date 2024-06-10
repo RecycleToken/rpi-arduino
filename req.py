@@ -1,43 +1,58 @@
-import requests
 import json
 from picamera import PiCamera
-import requests
 from time import sleep
+import send_image
 
 # Örnek bir resim dosyasının yolu
-image_path = './cam.jpg'
+image_path = 'cam.jpg'
 
 # POST isteği için endpoint URL'si
-command_url = 'http://greenscan.pythonanywhere.com/capture'
+command_url = 'https://classify.roboflow.com/waste-detection-yljc0/1'
+trash_url = 'https://detect.roboflow.com/yolov5-garbage-detection/1'
 camera = PiCamera()
 camera.resolution = (1024, 768)
 camera.start_preview()
 sleep(2)
 
 def get_command():
-    camera.capture('cam.jpg')
+    camera.capture(image_path)
     sleep(0.4)
-    with open(image_path, 'rb') as file:
-        files = {'image': file}
-        response = requests.post(url, files=files)
-    # API'nin yanıtını kontrol et
-    if response.status_code == 200:
+
+    trash_response = send_image.send_image(image_path, trash_url)
+
+    if trash_response is None:
+        return None
+    elif trash_response.status_code == 200:
+        try:
+            print(json.dumps(trash_response.json(), indent=4))
+            trash_result = json.loads(trash_response.text)
+            if(len(trash_result['predictions']) == 0):
+                print("No predictions from trash API")
+                return 0
+            trash_label = trash_result['predictions'][0]['class']
+            if trash_label == "trash":
+                print("Trash: Exiting...")
+                return 0
+            elif trash_label == "not trash":
+                print("Not Trash: Continue...")
+        except Exception as e:
+            print(e)
+            return
+
+    response = send_image.send_image(image_path, command_url)
+    if response is None: #TODO: Add error handling
+        return None
+    elif response.status_code == 200:
         try:
             result = json.loads(response.text)
-            print("Etiket: ", result['label'])
-            first_char = str(result['label'][0])
-            chars = ['G', 'H', 'P', 'A']
-            for i in range(len(chars)):
-                if first_char == chars[i]:
-                    return i+1
+            if len(result['predicted_classes']) == 0:
+                return 0
+            print("Etiket: ", result['predicted_classes'][0])
+            predicted_class = str(result['predicted_classes'][0])
+            return predicted_class
         except Exception as e:
-            print("Hata Oluştu: ",str(e))
+            print("Hata Olustu: ",str(e))
+            return 0
     else:
-        print("İstek başarısız. HTTP Hata Kodu:", response.status_code)
-
-#TODO: Add endpoint for carbon reward logic
-recycle_url = ''
-
-def post_recycled(data):
-    response = requests.post(recycle_url, data=data)
-    print("Recycle response: ".format(response))
+        print("Istek basarisiz. HTTP Hata Kodu:", response.status_code)
+        return 0

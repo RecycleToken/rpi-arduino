@@ -23,7 +23,15 @@ def process():
         elif command == "battery":
             command = "metal"
         recycled[command] += 1 #Increment the recycled material
-        ser.write("{}\n".format(command).encode('utf-8')) #Write the command to arduino through USB Serial
+
+        if command == "plastic":
+            ser.write("1\n".encode('utf-8')) #Write the command to arduino through USB Serial
+        elif command == "glass":
+            ser.write("2\n".encode('utf-8'))
+        elif command == "metal":
+            ser.write("3\n".encode('utf-8'))
+        elif command == "paper":
+            ser.write("4\n".encode('utf-8'))
         time.sleep(2)  # wait for 2 seconds
     time.sleep(3) #Allowing time for motors
 

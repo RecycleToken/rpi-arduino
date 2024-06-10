@@ -22,8 +22,8 @@ def update_queue(data):
 
 def create_transaction(data):
     response = requests.post(url + 'create-transaction', json=data)
-    print("Transaction Data: ", json.dumps(data, indent=4))
-    print("Transaction response: ", json.dumps(response.json(), indent=4))
+    # print("Transaction Data: ", json.dumps(data, indent=4))
+    # print("Transaction response: ", json.dumps(response.json(), indent=4))
     return response
 
 # example transaction data 

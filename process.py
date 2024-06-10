@@ -15,7 +15,7 @@ recycled = {
 def process():
     command = req.get_command() #Gets command from the Image Processing API
     # command can be plastic, glass, metal, paper, cardboard, battery
-    print("Command: {}".format(command)) #DEBUG: Print command
+    # print("Command: {}".format(command)) #DEBUG: Print command
     commands = ["plastic", "glass", "metal", "paper", "cardboard", "battery"] #Valid commands
     if command in commands:
         if command == "cardboard":
@@ -52,7 +52,7 @@ if __name__ == '__main__':
             continue
 
         # print("Queue: {}".format(queue)) #DEBUG: Print queue
-        print("Status: {}".format(queue['status']))
+        # print("Status: {}".format(queue['status'])) #DEBUG: Print status
         if queue['status'] == "Pending":
             q.update_queue({"status": "Ready", "user": queue['user']})
         

@@ -7,8 +7,8 @@ import send_image
 image_path = 'cam.jpg'
 
 # POST isteği için endpoint URL'si
-command_url = 'https://classify.roboflow.com/waste-detection-yljc0/1'
-trash_url = 'https://detect.roboflow.com/yolov5-garbage-detection/1'
+command_url = 'http://classify.roboflow.com/waste-detection-yljc0/1'
+trash_url = 'http://detect.roboflow.com/yolov5-garbage-detection/1'
 camera = PiCamera()
 camera.resolution = (1024, 768)
 camera.start_preview()

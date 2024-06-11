@@ -11,12 +11,13 @@ command_url = 'http://classify.roboflow.com/waste-detection-yljc0/1'
 
 camera = PiCamera()
 camera.resolution = (1024, 768)
-camera.start_preview()
-sleep(2)
 
 def get_command():
+    camera.start_preview()
+    sleep(2)
     camera.capture(image_path)
     sleep(0.4)
+    camera.stop_preview()
     # trash_url = 'http://detect.roboflow.com/yolov5-garbage-detection/1'
     # trash_response = send_image.send_image(image_path, trash_url)
 

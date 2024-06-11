@@ -1,15 +1,15 @@
 import requests
 import json
 
-url = 'https://green-dashboard.mehmetalicakmak.org/api/'
+url = 'http://green-dashboard.mehmetalicakmak.org/api/'
 
 def get_queue():
-    response = requests.post(url + 'get-queue')
+    response = requests.post(url + 'get-queue', verify=False)
     # print("Queue response: ", json.dumps(response.json(), indent=4)) 
     return response
 
 def update_queue(data):
-    response = requests.post(url + 'update-queue', json=data)
+    response = requests.post(url + 'update-queue', json=data, verify=False)
     # print("Update queue Data: ", json.dumps(data, indent=4))
     # print("Queue update response: ", json.dumps(response.json(), indent=4))
     return response
@@ -21,7 +21,7 @@ def update_queue(data):
 # }
 
 def create_transaction(data):
-    response = requests.post(url + 'create-transaction', json=data)
+    response = requests.post(url + 'create-transaction', json=data, verify=False)
     # print("Transaction Data: ", json.dumps(data, indent=4))
     # print("Transaction response: ", json.dumps(response.json(), indent=4))
     return response
